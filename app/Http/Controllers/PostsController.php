@@ -119,24 +119,14 @@ class PostsController extends Controller
     }
 
     public function api(Request $request){
-        $params = [
-            'title' => $request->title,
-            'categories' => $request->categories
-        ];
-        $params = array_filter($params);
-        if(!empty($params)) {
-            if (count($params) == 1) {
-                if (isset($params['categories'])) {
-                    $post = Posts::select('*')->where('categories', '=', $params['categories'])->get();
-                } elseif (isset($params['title'])) {
-                    $post = Posts::select('*')->where('title', '=', $params['title'])->get();
-                }
-                return Response::json($post, 200, array(), JSON_PRETTY_PRINT);
-            } else {
-                $post = Posts::select('*')->where('categories', '=', $params['categories'])->where('title', '=', $params['title'])->get();
-                return Response::json($post, 200, array(), JSON_PRETTY_PRINT);
-            }
-        }else echo "brak parametrow";
+        $post = Posts::select('*');
+        if($request->input('categories')){
+            $post = $post->where('categories', '=',$request->input('categories'));
+        }
+        if($request->input('title')){
+            $post = $post->where('title', 'like',"%".$request->input('title')."%");
+        }
+        return response()->json(["posts"=>$post->get(), JSON_PRETTY_PRINT]);
     }
 }
 
