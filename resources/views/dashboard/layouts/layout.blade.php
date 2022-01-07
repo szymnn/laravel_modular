@@ -12,7 +12,7 @@
         </div>
     </main>
 
-    <footer class="footer py-4  ">
+    <footer class="footer ">
         @include('layouts.components.footer')
     </footer>
 

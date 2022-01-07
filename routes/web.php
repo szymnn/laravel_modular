@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Artisan;
-
+use App\Models\User;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\CategoriesController;
+use App\Models\Categories;
+use App\Models\Posts;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +21,8 @@ use Illuminate\Support\Facades\Artisan;
 
 //main
 Route::get('/', function () {
-    return view('welcome');
+    $posts=Posts::simplepaginate(4);
+    return view('welcome', ['posts'=>$posts]);
 })->name('index.page');
 
 //Logowanie
@@ -34,8 +39,16 @@ Route::post('register', [AuthController::class, "store"])->name("register");
 Route::get('logout', [AuthController::class, "logout"])->name("logout");
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
-})->middleware('auth')->name('dashboard.page');
+Route::prefix('dashboard')->middleware('auth')->group(function () {
+
+    Route::get('/', function () {
+        return view('dashboard.dashboard');
+    })->name('dashboard.page');
+
+    Route::resource('/posts', PostsController::class);
+
+    Route::resource('/categories', CategoriesController::class);
+});
+
 
 

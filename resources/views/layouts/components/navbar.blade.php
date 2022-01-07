@@ -29,10 +29,16 @@
                 @guest
                 <li class="nav-item">
                     <a class="nav-link me-2" href="{{route('login.page')}}">
-                        <i class="fas fa-key opacity-6 text-dark me-1" aria-hidden="true"></i>
+                        <i class="fas fa-user opacity-6 text-dark me-1" aria-hidden="true"></i>
                         Zaloguj się!
                     </a>
                 </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-2" href="{{route('register.page')}}">
+                                <i class="fas fa-key opacity-6 text-dark me-1" aria-hidden="true"></i>
+                                Zarejestruj się!
+                            </a>
+                        </li>
                 @endguest
             </ul>
 

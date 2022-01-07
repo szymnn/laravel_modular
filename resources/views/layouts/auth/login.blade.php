@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="input-group input-group-outline mb-3">
                                     <label class="form-label">Hasło</label>
-                                    <input type="password" class="form-control @error('passwrod') is-invalid @enderror" id="password" name="password" onfocus="focused(this)" onfocusout="defocused(this)">
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" onfocus="focused(this)" onfocusout="defocused(this)">
                                     @error('password')
                                     <div class="invalid-feedback">
                                         {{ $message }}
