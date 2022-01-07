@@ -39,6 +39,7 @@ Route::post('register', [AuthController::class, "store"])->name("register");
 Route::get('logout', [AuthController::class, "logout"])->name("logout");
 
 
+
 Route::prefix('dashboard')->middleware('auth')->group(function () {
 
     Route::get('/', function () {
@@ -48,6 +49,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
     Route::resource('/posts', PostsController::class);
 
     Route::resource('/categories', CategoriesController::class);
+
+    Route::get('/api', [PostsController::class, "api"])->name("api");
 });
 
 

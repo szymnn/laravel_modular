@@ -7,6 +7,8 @@ use App\Models\Categories;
 use App\Models\Posts;
 use App\Models\Stats;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Response;
 
 class PostsController extends Controller
 {
@@ -18,7 +20,7 @@ class PostsController extends Controller
     public function index()
     {
         $categories = Categories::all();
-        $posts=Posts::simplepaginate(4);
+        $posts = Posts::simplepaginate(4);
         return view("layouts.posts.index", ['categories' => $categories, 'posts' => $posts]);
     }
 
@@ -30,35 +32,35 @@ class PostsController extends Controller
     public function create()
     {
         $categories = Categories::all();
-        $posts=Posts::simplepaginate(4);
-        return view('layouts.posts.create',['categories' => $categories, 'posts' => $posts]);
+        $posts = Posts::simplepaginate(4);
+        return view('layouts.posts.create', ['categories' => $categories, 'posts' => $posts]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreatePost $request)
     {
         $credentials = [
-            'author'    => auth()->user()->name,
-            'title'     => $request->title,
-            'content'   => $request->content,
-            'categories'=> $request->categories
+            'author' => auth()->user()->name,
+            'title' => $request->title,
+            'content' => $request->content,
+            'categories' => $request->categories
         ];
 
         Posts::create($credentials);
         Stats::updateOrCreate(['user_id' => auth()->user()->id], ['exp' => isset(auth()->user()->stats->exp) ? auth()->user()->stats->exp + 10 : 10,
-                                                                  'posts' => isset(auth()->user()->stats->posts) ? auth()->user()->stats->posts + 1 : 1]);
+            'posts' => isset(auth()->user()->stats->posts) ? auth()->user()->stats->posts + 1 : 1]);
         return redirect()->route('posts.create');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -72,7 +74,7 @@ class PostsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -86,26 +88,26 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update( CreatePost $request, $id)
+    public function update(CreatePost $request, $id)
     {
         $credentials = [
-            'title'     => $request->title,
-            'content'   => $request->content,
-            'categories'=> $request->categories
+            'title' => $request->title,
+            'content' => $request->content,
+            'categories' => $request->categories
         ];
 
-        Posts::updateOrCreate(['id' => $id],$credentials);
+        Posts::updateOrCreate(['id' => $id], $credentials);
         return redirect()->route('posts.create');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -116,5 +118,25 @@ class PostsController extends Controller
 
     }
 
-
+    public function api(Request $request){
+        $params = [
+            'title' => $request->title,
+            'categories' => $request->categories
+        ];
+        $params = array_filter($params);
+        if(!empty($params)) {
+            if (count($params) == 1) {
+                if (isset($params['categories'])) {
+                    $post = Posts::select('*')->where('categories', '=', $params['categories'])->get();
+                } elseif (isset($params['title'])) {
+                    $post = Posts::select('*')->where('title', '=', $params['title'])->get();
+                }
+                return Response::json($post, 200, array(), JSON_PRETTY_PRINT);
+            } else {
+                $post = Posts::select('*')->where('categories', '=', $params['categories'])->where('title', '=', $params['title'])->get();
+                return Response::json($post, 200, array(), JSON_PRETTY_PRINT);
+            }
+        }else echo "brak parametrow";
+    }
 }
+
