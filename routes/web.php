@@ -46,11 +46,13 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         return view('dashboard.dashboard');
     })->name('dashboard.page');
 
+    Route::get('/posts/api', [PostsController::class, "api"])->name("api");
+
     Route::resource('/posts', PostsController::class);
 
     Route::resource('/categories', CategoriesController::class);
 
-    Route::get('/api', [PostsController::class, "api"])->name("api");
+
 });
 
 
