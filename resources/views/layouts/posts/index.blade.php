@@ -1,4 +1,5 @@
-<div class="row">
+<div class="card card-profile mt-4">
+    <div class="row">
     <h3 id="simple-table-with-actions">Lista Postów</h3>
     <table class="table">
         <thead>
@@ -38,4 +39,5 @@
         </tbody>
         {{ $posts->links() }}
     </table>
+    </div>
 </div>
