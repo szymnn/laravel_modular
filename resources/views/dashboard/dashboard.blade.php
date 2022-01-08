@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.layout')
-
+@include('dashboard.components.tables.user_logs')
 @section('dashboard')
     <div class="container">
         <div class="row">
@@ -39,6 +39,9 @@
                     </div>
                 </div>
             </div>
+            <section class="pt-3 pb-4">
+                @yield('UserInfo')
+            </section>
         </div>
     </div>
 @endsection

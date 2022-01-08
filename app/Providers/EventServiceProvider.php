@@ -7,6 +7,13 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+//////////////////////////////////////////
+use App\Events\PostsCreated;
+use App\Listeners\StoreUserPostCreate;
+use App\Events\LoginHistory;
+use App\Listeners\StoreUserLoginHistory;
+
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -18,6 +25,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        PostsCreated::class=>[
+          StoreUserPostCreate::class,
+        ],
+        LoginHistory::class=>[
+            StoreUserLoginHistory::class,
+        ],
+        'Illuminate\Auth\Events\Login' => ['App\Listeners\LoginSuccessful'],
     ];
 
     /**

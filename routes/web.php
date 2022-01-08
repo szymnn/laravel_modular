@@ -8,6 +8,7 @@ use App\Http\Controllers\PostsController;
 use App\Http\Controllers\CategoriesController;
 use App\Models\Categories;
 use App\Models\Posts;
+use App\Models\UserLog;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,8 +44,15 @@ Route::get('logout', [AuthController::class, "logout"])->name("logout");
 Route::prefix('dashboard')->middleware('auth')->group(function () {
 
     Route::get('/', function () {
-        return view('dashboard.dashboard');
+        $logs=UserLog::simplepaginate(10);
+        return view('dashboard.dashboard', ['logs'=>$logs ]);
     })->name('dashboard.page');
+
+    //Route::get('/logs', [AuthController::class, "index"])->name("logs");
+//    Route::get('logs', function () {
+//        $logs=UserLog::simplepaginate(4);
+//        return view('dashboard.components.tables.user_logs', ['logs'=>$logs]);
+//    })->name('logs');
 
     Route::get('/posts/api', [PostsController::class, "api"])->name("api");
 

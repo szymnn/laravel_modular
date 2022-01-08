@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LoginHistory;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\LoginUserRequest;
+use App\Models\UserLog;
 use App\Models\Stats;
 use App\Models\User;
 use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class AuthController extends Controller
 {
@@ -19,7 +23,6 @@ class AuthController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -51,8 +54,9 @@ class AuthController extends Controller
                 "user_id"   => $user->id,
                 "posts"     => 0,
                 "coments"   => 0,
-                "exp"       =>0];
+                "exp"       => 0];
             Stats::create($data);
+            Alert::toast('Konto zostało utworzone! <br> Możesz teraz się na nie zalogować', 'succes');
             return redirect()->route("login.page");
 
     }
@@ -65,6 +69,7 @@ class AuthController extends Controller
      */
     public function show($id)
     {
+
 
     }
 
@@ -116,19 +121,11 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = User::find(auth()->user()->id);
-
             $user->update(['last_login' => now()]);
-            $last = auth()->user()->last_login;
-            $last = date('dmY', strtotime($last));
-            $now = date('dmY', time());
-
-            if ($last != $now) {
-                Stats::updateOrCreate(['user_id' => auth()->user()->id], ['exp' => isset(auth()->user()->stats->exp) ? auth()->user()->stats->exp + 1 : 1]);
-            }
+            event(new LoginHistory(auth()->user()));
             return redirect()->route("index.page");
         } else {
-            // zwroc strone logowania
-
+            Alert::error("Podano błędne dane logowania");
             return redirect()->route("login.page");
         }
     }

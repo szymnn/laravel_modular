@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PostsCreated;
 use App\Http\Requests\CreatePost;
 use App\Models\Categories;
 use App\Models\Posts;
@@ -52,8 +53,8 @@ class PostsController extends Controller
         ];
 
         Posts::create($credentials);
-        Stats::updateOrCreate(['user_id' => auth()->user()->id], ['exp' => isset(auth()->user()->stats->exp) ? auth()->user()->stats->exp + 10 : 10,
-            'posts' => isset(auth()->user()->stats->posts) ? auth()->user()->stats->posts + 1 : 1]);
+
+        event(new PostsCreated(auth()->user()));
         return redirect()->route('posts.create');
     }
 
@@ -65,9 +66,6 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-//        $post = Posts::findorfail($id);
-//        //dd($post);
-//        return view('posts.edit', ['post' => $post]);
 
     }
 
@@ -81,7 +79,6 @@ class PostsController extends Controller
     {
         $post = Posts::findorfail($id);
         $categories = Categories::all();
-        //dd($post);
         return view('layouts.posts.edit', ['post' => $post, 'categories' => $categories]);
     }
 
