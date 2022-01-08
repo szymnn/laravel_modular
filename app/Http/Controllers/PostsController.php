@@ -6,10 +6,8 @@ use App\Events\PostsCreated;
 use App\Http\Requests\CreatePost;
 use App\Models\Categories;
 use App\Models\Posts;
-use App\Models\Stats;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Response;
+
 
 class PostsController extends Controller
 {

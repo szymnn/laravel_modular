@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Models\Stats;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Session;
 use RealRashid\SweetAlert\Facades\Alert;
 

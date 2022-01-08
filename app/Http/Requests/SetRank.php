@@ -25,7 +25,7 @@ class SetRank extends FormRequest
     public function rules()
     {
         return [
-
+            'role'      => 'required'
         ];
     }
 }
