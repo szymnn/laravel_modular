@@ -1,6 +1,4 @@
 <html>
-{{--SWAL--}}
-@include('sweetalert::alert')
 {{--DASHBOARD COMPONENTS--}}
 @include('dashboard.components.sidebar')
 {{--MAIN COMPONENTS--}}
@@ -13,6 +11,8 @@
         @stack('head')
     </head>
     <body class="g-sidenav-show  bg-gray-200">
+    {{--SWAL--}}
+    @include('sweetalert::alert')
         <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
             @yield('sidebar')
 

@@ -1,6 +1,4 @@
 <html>
-{{--SWAL--}}
-@include('sweetalert::alert')
 {{--COMPONENTS--}}
 @include('layouts.components.footer')
 @include('layouts.components.head')
@@ -12,6 +10,8 @@
     </head>
 
     <body class="g-sidenav-show  bg-gray-200">
+    {{--SWAL--}}
+    @include('sweetalert::alert')
         <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
 
             <header>

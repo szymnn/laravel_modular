@@ -30,7 +30,7 @@ class StoreUserLoginHistory
     {
         $date = Carbon::now()->toDateTimeString();
          DB::table('user_logs')->insert(
-            ['name' => $event->user->name, 'action'=> $action, 'ip_address' => request()->ip(),'created_at' => $date, 'updated_at' => $date]
+            ['name' => $event->user->name, 'ip_address' => request()->ip(),'created_at' => $date, 'updated_at' => $date]
         );
     }
 }
