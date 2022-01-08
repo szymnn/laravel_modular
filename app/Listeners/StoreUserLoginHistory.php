@@ -6,6 +6,7 @@ use App\Events\LoginHistory;
 use App\Models\UserLog;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Carbon\Carbon;
 
 
 class StoreUserLoginHistory
@@ -28,8 +29,9 @@ class StoreUserLoginHistory
      */
     public function handle(LoginHistory $event)
     {
+        $date = Carbon::now()->toDateTimeString();
          UserLog::insert(
-            ['name' => $event->user->name, 'ip_address' => request()->ip()]
+            ['name' => $event->user->name, 'ip_address' => request()->ip(),'created_at' => $date, 'updated_at' => $date]
         );
     }
 }
