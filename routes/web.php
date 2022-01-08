@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Models\Categories;
 use App\Models\Posts;
 use App\Models\UserLog;
+use Spatie\Permission\Models\Role;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,7 +23,7 @@ use App\Models\UserLog;
 
 //main
 Route::get('/', function () {
-    $posts=Posts::simplepaginate(4);
+    $posts=Posts::orderBy('created_at', 'desc')->simplepaginate(5);
     return view('welcome', ['posts'=>$posts]);
 })->name('index.page');
 
@@ -44,22 +45,15 @@ Route::get('logout', [AuthController::class, "logout"])->name("logout");
 Route::prefix('dashboard')->middleware('auth')->group(function () {
 
     Route::get('/', function () {
-        $logs=UserLog::simplepaginate(10);
-        return view('dashboard.dashboard', ['logs'=>$logs ]);
+        $logs=UserLog::orderBy('created_at', 'desc')->simplepaginate(5);
+        $users=User::simplepaginate(5);
+        return view('dashboard.dashboard', ['logs'=>$logs, 'users' => $users ]);
     })->name('dashboard.page');
-
-    //Route::get('/logs', [AuthController::class, "index"])->name("logs");
-//    Route::get('logs', function () {
-//        $logs=UserLog::simplepaginate(4);
-//        return view('dashboard.components.tables.user_logs', ['logs'=>$logs]);
-//    })->name('logs');
-
-    Route::get('/posts/api', [PostsController::class, "api"])->name("api");
 
     Route::resource('/posts', PostsController::class);
 
     Route::resource('/categories', CategoriesController::class);
-
+    Route::resource('/users', AuthController::class);
 
 });
 

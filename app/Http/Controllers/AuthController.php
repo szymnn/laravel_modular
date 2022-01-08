@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\LoginHistory;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\SetRank;
 use App\Models\UserLog;
 use App\Models\Stats;
 use App\Models\User;
@@ -12,6 +12,7 @@ use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\Permission\Models\Role;
 
 
 class AuthController extends Controller
@@ -70,7 +71,6 @@ class AuthController extends Controller
     public function show($id)
     {
 
-
     }
 
     /**
@@ -81,7 +81,9 @@ class AuthController extends Controller
      */
     public function edit($id)
     {
-        //
+        $roles= Role::all();
+        $user = User::findorfail($id);
+        return view('dashboard.users.edit', ['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -91,9 +93,16 @@ class AuthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SetRank $request, $id)
     {
-        //
+        $credentials = [
+            'role' => $request->role,
+        ];
+        $user = User::find($id);
+        $user->roles()->detach();
+        $user->assignRole($credentials['role']);
+        toast('Pomyślnie zmieniono uprawnienia użytkownika: <b>'.$user->name . "</b><br>Nowe uprawnienia to: <b>".$user->roles->pluck('name')."</b>", "success" );
+        return redirect()->route('dashboard.page');
     }
 
     /**
@@ -120,8 +129,6 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            $user = User::find(auth()->user()->id);
-            $user->update(['last_login' => now()]);
             event(new LoginHistory(auth()->user()));
             return redirect()->route("index.page");
         } else {

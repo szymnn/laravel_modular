@@ -32,7 +32,7 @@ class LoginSuccessful
         $last = $event->user->last_login;
         $last = date('dmY', strtotime($last));
         $now = date('dmY', time());
-
+        $event->user->update(['last_login' => now()]);
         if ($last != $now) {
             Stats::updateOrCreate(['user_id' => $event->user->id], ['exp' => isset($event->user->stats->exp) ? $event->user->stats->exp + 1 : 1]);
         }
