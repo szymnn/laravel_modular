@@ -13,13 +13,14 @@
     <body class="g-sidenav-show  bg-gray-200">
     {{--SWAL--}}
     @include('sweetalert::alert')
+    @yield('sidebar')
         <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-            @yield('sidebar')
+
 
             @yield('navbar_dashboard')
-            <section class="pt-3 pb-4">
+            <div class="container-fluid py-4">
                 @yield('dashboard')
-            </section>
+            </div>
 
             <footer class="footer ">
                 <div class="container">

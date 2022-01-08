@@ -2,7 +2,6 @@
 @include('dashboard.components.tables.user_logs')
 @include('dashboard.components.tables.user_list')
 @section('dashboard')
-    <div class="container">
         <div class="row">
             <div class="container-fluid py-4">
                 <div class="row">
@@ -47,5 +46,4 @@
                 @yield('UserList')
             </section>
         </div>
-    </div>
 @endsection
