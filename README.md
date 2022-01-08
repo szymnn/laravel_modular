@@ -13,7 +13,6 @@ W celu uruchomienia aplikacji poraz pierwszy należy:
 
 - Skonfigurować połączenie bazy danych w ENV
 - Wykonać polecenie:: php artisan migrate:fresh --seed --seeder=CreatePermissions
-- Wykonać polecenie:: composer require realrashid/sweet-alert
 ## Działanie
 
 Na sam początek w aplikacji są stworzeni użytkownicy z prawami: Admin, Moderator, User  
