@@ -22,5 +22,19 @@ Na sam początek w aplikacji są stworzeni użytkownicy z prawami: Admin, Modera
 
 Dodatkowo istnieje możliwość stworzenia własnego użytkownika.
 W celu rozrywkowo-edukacyjnym powstały również statytyki, użytkownik zbiera tzw. exp za logowanie się oraz dodawnie postów - w tym przypadku tylko moderator i admin
-##Podziękowanie
+
+## ROUTING
+
+Routing jest zabezpieczony na działania zewnętrzne użytkowników, jedynie endpointy tj. 
+- /api/posts 
+- strona główna 
+- logowanie 
+- rejestracja
+
+są dostępne publicznie
+
+endpoint /api/posts wyszukuje dane po 'like' %tytul% oraz %kategoria%, gdy zabraknie tych elementów zwraca wszystkie posty. 
+Dodatkowo w celu 'zabezpieczenia' dodałem wymóg przesyłanej treści na string.
+
+## Podziękowanie
 Dziękuję za sprawdzenie aplikacji proszę o informację zwrotną chociażby w postaci codereview

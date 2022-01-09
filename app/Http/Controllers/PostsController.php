@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\PostsCreated;
+use App\Http\Requests\ApiGetPosts;
 use App\Http\Requests\CreatePost;
 use App\Models\Categories;
 use App\Models\Posts;
@@ -113,10 +114,10 @@ class PostsController extends Controller
 
     }
 
-    public function api(Request $request){
+    public function api(ApiGetPosts $request){
         $post = Posts::select('*');
         if($request->input('categories')){
-            $post = $post->where('categories', '=',$request->input('categories'));
+            $post = $post->where('categories', 'like', "%".$request->input('categories')."%");
         }
         if($request->input('title')){
             $post = $post->where('title', 'like',"%".$request->input('title')."%");
