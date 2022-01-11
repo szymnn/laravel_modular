@@ -1,5 +1,7 @@
 {
     "Shop": true,
     "Auth": true,
-    "Stats": true
+    "Stats": true,
+    "Accounts": true,
+    "AuthorizationModuleProvider": true
 }

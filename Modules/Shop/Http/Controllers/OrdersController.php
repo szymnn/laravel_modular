@@ -5,10 +5,8 @@ namespace Modules\Shop\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Shop\Entities\Product;
-use Modules\Shop\Http\Requests\productRequest;
 
-class ShopController extends Controller
+class OrdersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +14,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
-        return response()->json([$product, JSON_PRETTY_PRINT]);
-        //return view('shop::index');
+        return view('shop::index');
     }
 
     /**
@@ -35,22 +31,9 @@ class ShopController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(productRequest $request)
+    public function store(Request $request)
     {
-
-        $cridentials = [
-            'name'          => $request->name,
-            'description'   => $request->description,
-            'image'         => $request->image ? $request->image : 'none',
-            'categories'    => $request->categories,
-            'amount'        => $request->amount,
-            'price'         => $request->price,
-            'product_owner' => 'test_user',
-            'additional_info'=>$request->additional_info
-        ];
-
-        Product::create($cridentials);
-        return("Post utworzono");
+        //
     }
 
     /**
